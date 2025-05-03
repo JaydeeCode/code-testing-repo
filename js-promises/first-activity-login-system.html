@@ -1,0 +1,75 @@
+<!-- 
+
+Here's my first JS promise activity 
+ 
+Activity: Simulate a User Login System
+
+- Create a simple login simulation where a user enters a username and password. 
+- Use a promise to simulate an asynchronous login process. 
+- If the username and password are correct, resolve the promise with a success message. 
+- If they are incorrect, reject the promise with an error message.
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- Step 1. Create an HTML form. Make sure to include id name (needed for JS function)-->
+    <h1>Login Simulation</h1>
+    <form action="">
+      <label for="username">Username: </label>
+      <input type="text" id="username" required />
+      <br /><br />
+      <label for="password">Password: </label>
+      <input type="password" id="password" required />
+      <br /><br />
+      <button type="submit">Login</button>
+    </form>
+    <!-- Add element to place the message -->
+    <p id="message"></p>
+    <!-- Here we start creating the function using Promise -->
+    <script>
+      // Step 2. We create function to simulate login process
+      // This function takes two parameters: username and password
+      function login(username, password) {
+        // We return a "new Promise" object that takes function (executor function) with two parameters: resolve and reject.
+        return new Promise((resolve, reject) => {
+          // Simulate asynchronous operation using setTimeout (1 second delay) - Note that we can remove this, this is just to simulate asynchronous operation, without this, it will just look like synchronous operation.
+          setTimeout(() => {
+            // Check if the username and password match the correct values
+            if (username === "user" && password === "password") {
+              resolve("Login successful!");
+            } else {
+              // if not, we reject it with error message (in real life, we check credentials from database)
+              reject("Login failed: Incorrect username or password.");
+            }
+          }, 1000);
+        });
+      }
+      // Step 3. We add event listener to handle submit event of the form
+      document.querySelector("form").addEventListener("submit", (event) => {
+        event.preventDefault(); // This is to prevent page reload when form is submitted
+        // We declare a "username" and "password" variables. This is where we get the values (username & password) from the input fields using IDs
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        // We declare a "messageElement" variable to get the element where we will display the mesage from resolve or reject parameters.
+        const messageElement = document.getElementById("message");
+        // We call the login function and pass the username and password (from the variable we just declared above) as arguments.
+        login(username, password)
+          // We use ".then" method to handle the resolved promise.
+          .then((message) => {
+            messageElement.textContent = message;
+          })
+          // We use ".catch" method to handle the rejected promise.
+          .catch((error) => {
+            messageElement.textContent = error;
+          });
+      });
+    </script>
+  </body>
+</html>
